@@ -72,16 +72,22 @@ def sendImageAttachments(client, channel, message, url):
     '''
     attachments = []
 
-    if len(url) == 4: # weekday lunch menu & dinner menu (Monday to Thursday)
+    if len(url) == 6: # weekday lunch menu & dinner menu (Monday to Thursday)
+        for i in range(3):
+            if i == 0:
+                attachment = {"title": "COURSE1/5", "image_url": url[i]}
+            elif i == 1:
+                attachment = {"title": "COURSE2/4", "image_url": url[i]}
+            else:
+                attachment = {"title": "COURSE3/6", "image_url": url[i]}
+            attachments.append(attachment)
+    elif len(url) == 4: # Friday dinner menu
         for i in range(2):
             if i == 0:
                 attachment = {"title": "COURSE1/5", "image_url": url[i]}
             else:
                 attachment = {"title": "COURSE2/4", "image_url": url[i]}
             attachments.append(attachment)
-    elif len(url) == 2: # Friday dinner menu
-        attachment = {"title": "COURSE1", "image_url": url[0]}
-        attachments.append(attachment)
     else: # weekly menu table or others
         for i in range(len(url)):
             attachment = {"title": "", "image_url": url[i]}
@@ -97,8 +103,8 @@ def sendImageBlocks(client, channel, message, url):
     '''
     blocks = []
 
-    if len(url) == 4: # weekday lunch menu & dinner menu (Monday to Thursday)
-        for i in range(2):
+    if len(url) == 6: # weekday lunch menu & dinner menu (Monday to Thursday)
+        for i in range(3):
             block = {"type": "image", "image_url": url[i], "alt_text": url[i].split('/')[-1]}
             blocks.append(block)
     elif len(url) == 2: # Friday dinner menu
@@ -141,8 +147,8 @@ if __name__ == "__main__":
         band_post = bc.getBandPost(target_id=band_id, band_token=band_token) # get maximum 20 posts
 
         for i, item in enumerate(band_post['result_data']['items']):
-            # check only 2 latest posts
-            if i == 2:
+            # check only 1 latest posts
+            if i == 1:
                 break
 
             # get processed data as dict
